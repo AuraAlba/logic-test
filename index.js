@@ -1,35 +1,36 @@
 module.exports = {
     parser: text => {
-    // TODO: Implement the logic to create the matrix and return it, see tests
-    var phrase = text;
+        let phrase = text.replace(/\s/g,'');
+        let rows = Math.floor(Math.sqrt(phrase.length));
+        let columns = Math.ceil(Math.sqrt(phrase.length));
 
-    phrase = phrase.replace(/\s/g, '');
-
-    var rows = Math.floor(Math.sqrt(phrase.length));
-    var columns = Math.ceil(Math.sqrt(phrase.length));
-    if (rows * columns < phrase.length) {
-        columns = Math.ceil(Math.sqrt(phrase.length));
-        rows = Math.ceil(Math.sqrt(phrase.length));
-    }
-
-    var charMat = Array(columns).fill().map(() => {}
-        Array(rows).fill();
-    );
-
-    for (j = 0; j < rows; j++) {
-        for (i = 0; i < columns; i++) {
-            charMat[i][j] = phrase[i + (j * columns)];
+        if (rows * columns < phrase.length){
+            columns = Math.ceil(Math.sqrt(phrase.length));
+            rows = Math.ceil(Math.sqrt(phrase.length));
         }
-    }
-    return [[charMat]];
-},
-    printer: matrix =>
-        {
-            // TODO: Implement the logic to print the matrix in the expected way, see tests
-            var newString = matrix.map(function(char) {
-                return char.join('');
-            }).join(' ');
 
-            return newString;
+        const charMat = Array(rows).fill().map(() => Array(columns).fill());
+
+        for (i=0; i<rows; i++) {
+            for (j=0; j<columns; j++) {
+                charMat[i][j] = phrase[j + (i * columns)];
+            }
         }
+
+        return charMat;
+    },
+    printer: matrix => {
+        let newMatrix = [];
+
+        for(j=0; j < matrix[0].length; j++){
+            newMatrix[j] = [];
+            for(i=0; i < matrix.length; i++){
+                newMatrix[j][i] = matrix[i][j];
+            }
+        }
+
+        return newMatrix.map(function(char) {
+            return char.join('');
+        }).join(' ');
+    }
 }
